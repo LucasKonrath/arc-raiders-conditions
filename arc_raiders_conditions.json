@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-11-06T13:43:39.294087",
+  "time_info": {
+    "current_time": "4:43:39 PM",
+    "timezone": "UTC"
+  },
+  "maps": [
+    {
+      "name": "Dam Battlegrounds",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    },
+    {
+      "name": "Buried City",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    },
+    {
+      "name": "The Spaceport",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    },
+    {
+      "name": "The Blue Gate",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    },
+    {
+      "name": "Practice Range",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    },
+    {
+      "name": "Stella Montis",
+      "current_condition": null,
+      "is_major_condition": true,
+      "next_condition": null,
+      "next_time": null,
+      "status": "no_active_condition"
+    }
+  ],
+  "total_maps": 6
+}
