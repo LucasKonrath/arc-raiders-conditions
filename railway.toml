@@ -1,0 +1,14 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python3 rest_api_server.py"
+healthcheckPath = "/health"
+restartPolicyType = "always"
+
+[variables]
+PORT = "5001"
+
+[[services]]
+name = "arc-raiders-api"
+source = "."
