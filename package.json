@@ -1,0 +1,33 @@
+{
+  "name": "arc-raiders-conditions-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for ARC Raiders map conditions",
+  "main": "mcp_server.py",
+  "scripts": {
+    "start": "python mcp_server.py",
+    "test": "python -m pytest tests/",
+    "lint": "black . && isort .",
+    "type-check": "mypy ."
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "arc-raiders",
+    "gaming",
+    "map-conditions",
+    "ai-tools"
+  ],
+  "author": "Lucas Konrath",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LucasKonrath/arc-raiders-conditions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LucasKonrath/arc-raiders-conditions/issues"
+  },
+  "homepage": "https://github.com/LucasKonrath/arc-raiders-conditions",
+  "engines": {
+    "python": ">=3.8"
+  }
+}

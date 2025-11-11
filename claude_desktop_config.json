@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "arc-raiders-conditions": {
+      "command": "python3",
+      "args": ["/Users/lucasdamaceno/Documents/pocs/arc-raiders-conditions/mcp_server.py"],
+      "env": {}
+    }
+  }
+}
