@@ -1,46 +1,46 @@
 {
-  "timestamp": "2025-11-06T13:43:39.294087",
+  "timestamp": "2025-11-11T16:50:18.886599",
   "time_info": {
-    "current_time": "4:43:39 PM",
+    "current_time": "7:50:18 PM",
     "timezone": "UTC"
   },
   "maps": [
     {
       "name": "Dam Battlegrounds",
-      "current_condition": null,
-      "is_major_condition": true,
-      "next_condition": null,
-      "next_time": null,
-      "status": "no_active_condition"
+      "current_condition": "HIDDEN CACHES",
+      "is_major_condition": false,
+      "next_condition": "NIGHT RAID",
+      "next_time": "8:00 PM",
+      "status": "available"
     },
     {
       "name": "Buried City",
       "current_condition": null,
-      "is_major_condition": true,
-      "next_condition": null,
-      "next_time": null,
+      "is_major_condition": false,
+      "next_condition": "HIDDEN CACHES",
+      "next_time": "8:00 PM",
       "status": "no_active_condition"
     },
     {
       "name": "The Spaceport",
-      "current_condition": null,
+      "current_condition": "HIDDEN BUNKER",
       "is_major_condition": true,
-      "next_condition": null,
-      "next_time": null,
-      "status": "no_active_condition"
+      "next_condition": "NIGHT RAID",
+      "next_time": "10:00 PM",
+      "status": "available"
     },
     {
       "name": "The Blue Gate",
-      "current_condition": null,
+      "current_condition": "ELECTROMAGNETIC STORM",
       "is_major_condition": true,
-      "next_condition": null,
-      "next_time": null,
-      "status": "no_active_condition"
+      "next_condition": "HARVESTER",
+      "next_time": "8:00 PM",
+      "status": "available"
     },
     {
       "name": "Practice Range",
       "current_condition": null,
-      "is_major_condition": true,
+      "is_major_condition": false,
       "next_condition": null,
       "next_time": null,
       "status": "no_active_condition"
@@ -48,10 +48,10 @@
     {
       "name": "Stella Montis",
       "current_condition": null,
-      "is_major_condition": true,
+      "is_major_condition": false,
       "next_condition": null,
       "next_time": null,
-      "status": "no_active_condition"
+      "status": "not_available"
     }
   ],
   "total_maps": 6

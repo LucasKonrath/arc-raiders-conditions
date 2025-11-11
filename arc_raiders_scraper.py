@@ -36,11 +36,20 @@ class ARCRaidersScraper:
         """Extract map conditions from the parsed HTML"""
         map_conditions = []
         
-        # Look for map sections - they typically have headings like "Dam Battlegrounds", "Buried City", etc.
-        map_sections = soup.find_all(['h2', 'h3'], string=re.compile(r'(Dam Battlegrounds|Buried City|The Spaceport|The Blue Gate|Practice Range|Stella Montis)', re.IGNORECASE))
+        # Get all text content - it comes as a single flattened line
+        page_text = soup.get_text()
         
-        for section in map_sections:
-            map_name = section.get_text().strip()
+        # Map names to look for
+        map_names = [
+            "Dam Battlegrounds",
+            "Buried City", 
+            "The Spaceport",
+            "The Blue Gate",
+            "Practice Range",
+            "Stella Montis"
+        ]
+        
+        for map_name in map_names:
             map_data = {
                 'name': map_name,
                 'current_condition': None,
@@ -50,64 +59,42 @@ class ARCRaidersScraper:
                 'status': 'available'
             }
             
-            # Find the parent container for this map - go up several levels to get the full section
-            container = section
-            for _ in range(5):  # Go up the DOM tree to find the main container
-                if container.parent:
-                    container = container.parent
-                else:
-                    break
+            # Create pattern to find the map section
+            # Look for the map name followed by content until the next map name
+            other_maps = [name for name in map_names if name != map_name]
+            next_map_pattern = "|".join(re.escape(name) for name in other_maps)
             
-            # Get all text from the container
-            container_text = container.get_text()
+            map_pattern = rf'{re.escape(map_name)}\s*(.*?)(?={next_map_pattern}|Data based on UTC|$)'
+            match = re.search(map_pattern, page_text, re.IGNORECASE | re.DOTALL)
             
-            # Parse the text more directly
-            lines = [line.strip() for line in container_text.split('\n') if line.strip()]
-            
-            current_idx = -1
-            next_idx = -1
-            
-            # Find indices of key elements
-            for i, line in enumerate(lines):
-                if 'CURRENT' in line.upper():
-                    current_idx = i
-                elif 'NEXT CONDITION' in line.upper():
-                    next_idx = i
-            
-            # Extract current condition
-            if current_idx >= 0 and current_idx + 1 < len(lines):
-                potential_condition = lines[current_idx + 1]
-                # Skip "MAJOR CONDITION" line
-                if 'MAJOR CONDITION' in potential_condition.upper():
-                    map_data['is_major_condition'] = True
-                    if current_idx + 2 < len(lines):
-                        potential_condition = lines[current_idx + 2]
+            if match:
+                section_text = match.group(1).strip()
                 
-                # Clean condition names
-                if potential_condition and not any(skip in potential_condition.upper() for skip in ['NEXT CONDITION', 'CURRENT', 'MAJOR CONDITION', 'AM', 'PM']):
-                    map_data['current_condition'] = potential_condition.strip()
-            
-            # Extract next condition and time
-            if next_idx >= 0:
-                # Look for condition name and time in the following lines
-                for i in range(next_idx + 1, min(next_idx + 4, len(lines))):
-                    if i < len(lines):
-                        line = lines[i].strip()
-                        if ':' in line and ('AM' in line.upper() or 'PM' in line.upper()):
-                            map_data['next_time'] = line
-                        elif line and not any(skip in line.upper() for skip in ['NEXT CONDITION', 'CURRENT', 'MAJOR CONDITION', 'AM', 'PM']):
-                            if not map_data['next_condition']:  # Only set if not already set
-                                map_data['next_condition'] = line
-            
-            # Check for special statuses
-            if 'NO ACTIVE CONDITION' in container_text.upper():
-                map_data['status'] = 'no_active_condition'
-            elif 'NOT AVAILABLE' in container_text.upper():
-                map_data['status'] = 'not_available'
-            
-            # Check for major condition marker
-            if 'MAJOR CONDITION' in container_text.upper():
-                map_data['is_major_condition'] = True
+                # Look for CURRENT condition with regex
+                current_match = re.search(r'CURRENT\s+([A-Z\s]+?)(?:\s+MAJOR CONDITION|\s+Next Condition|\s+$)', section_text, re.IGNORECASE)
+                if current_match:
+                    condition = current_match.group(1).strip()
+                    # Clean up the condition name (remove extra spaces)
+                    condition = re.sub(r'\s+', ' ', condition)
+                    map_data['current_condition'] = condition
+                
+                # Check for MAJOR CONDITION
+                if re.search(r'MAJOR CONDITION', section_text, re.IGNORECASE):
+                    map_data['is_major_condition'] = True
+                
+                # Look for Next Condition
+                next_match = re.search(r'Next Condition\s+([A-Z\s]+?)\s+(\d{1,2}:\d{2}\s+[AP]M)', section_text, re.IGNORECASE)
+                if next_match:
+                    next_condition = re.sub(r'\s+', ' ', next_match.group(1).strip())
+                    next_time = next_match.group(2).strip()
+                    map_data['next_condition'] = next_condition
+                    map_data['next_time'] = next_time
+                
+                # Check for special statuses
+                if re.search(r'No active condition', section_text, re.IGNORECASE):
+                    map_data['status'] = 'no_active_condition'
+                elif re.search(r'Map not available', section_text, re.IGNORECASE):
+                    map_data['status'] = 'not_available'
             
             map_conditions.append(map_data)
         
